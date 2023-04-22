@@ -1,7 +1,6 @@
 from time import strftime
 from fastapi import FastAPI
 from pydantic import BaseModel
-from typing import Optional
 import uvicorn
 import os
 
