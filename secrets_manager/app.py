@@ -3,17 +3,18 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import Optional
 import uvicorn
+import os
+
+from secrets_manager.lib.secrets_manager import SecretsManagerClient
 
 app = FastAPI()
+
+sm_client = SecretsManagerClient(access_key=os.environ["ACCESS-KEY"], secret_key=os.environ["SECRET-KEY"], region=os.environ["REGION"])
 
 class PasswordRequest(BaseModel):
     secret_name: str
     username: str 
-
-class SecretsManagerClient:
-    def __init__(self, access_key, secret_key, region):
-        session = boto3.session.Session(aws_access_key_id=access_key, aws_secret_access_key=secret_key, region_name=region)
-        self.client = session.client('secretsmanager')
+    description: str
 
 @app.get("/my-first-api")
 def hello(name = None):
@@ -25,8 +26,10 @@ def hello(name = None):
 
 @app.post('/create_secret')
 def user_add(password_request: PasswordRequest):
-    students.append(student)
-    return{'student': students[-1]}
+    secret_name = password_request['secret_name']
+    username = password_request['username']
+    description = password_request['description']
+    sm_client.generate_and_store_secret(secret_name=secret_name, username=username, description=description)
 
 def run():
     uvicorn.run("app:app", port=5000, log_level="info")

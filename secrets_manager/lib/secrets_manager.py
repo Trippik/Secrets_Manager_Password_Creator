@@ -24,3 +24,12 @@ class SecretsManagerClient:
         alphabet = string.ascii_letters + string.digits + string.printable + string.punctuation
         password = ''.join(secrets.choice(alphabet) for i in range(20))
         return(password)
+    
+    def generate_and_store_secret(self, secret_name:str, username:str, description=None):
+        password = self.generate_password()
+        secret = {
+            'username': username,
+            'password': password,
+        }
+        secret = str(secret)
+        self.create_secret(secret_string=secret, description=description)
