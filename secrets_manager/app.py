@@ -15,23 +15,24 @@ class PasswordRequest(BaseModel):
     username: str 
     description: str
 
-@app.get("/my-first-api")
-def hello(name = None):
-    if(name is None):
-        text = "Hello!"
-    else:
-        text="Hello " + name + "!"
-    return {text}
+@app.get("/test")
+def test():
+    return {'API Responding Correctly'}
 
 @app.post('/create_secret')
 def user_add(password_request: PasswordRequest):
     secret_name = password_request.secret_name
     username = password_request.username
     description = password_request.description
-    sm_client.generate_and_store_secret(secret_name=secret_name, username=username, description=description)
+    new = sm_client.generate_and_store_secret(secret_name=secret_name, username=username, description=description)
+    if new:
+        message = secret_name + " created successfuly"
+    else:
+        message = "Secret named " + secret_name + " already exists"
+    return {message}
 
 def run():
-    uvicorn.run("app", port=5000, log_level="info")
+    uvicorn.run("secrets_manager.app:app", port=8000, log_level="info")
 
 if __name__ == "__main__":
     run()

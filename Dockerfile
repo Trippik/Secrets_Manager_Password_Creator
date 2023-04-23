@@ -22,4 +22,8 @@ ENV SECRET-KEY = "Placeholder"
 
 ENV REGION = "Placeholder"
 
+EXPOSE 8000/tcp
+
+EXPOSE 8000/udp
+
 CMD [ "Secrets-Creator" ]

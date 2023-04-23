@@ -1,6 +1,7 @@
 import boto3
 import secrets
 import string
+import botocore.exceptions
 
 class SecretsManagerClient:
     def __init__(self, access_key:str, secret_key:str, region:str):
@@ -26,10 +27,15 @@ class SecretsManagerClient:
         return(password)
     
     def generate_and_store_secret(self, secret_name:str, username:str, description=None):
+        new = True
         password = self.generate_password()
         secret = {
             'username': username,
             'password': password,
         }
         secret = str(secret)
-        self.create_secret(name=secret_name, secret_string=secret, description=description)
+        try:
+            self.create_secret(name=secret_name, secret_string=secret, description=description)
+        except self.client.exceptions.ResourceExistsException:
+            new = False
+        return new
