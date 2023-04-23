@@ -22,4 +22,6 @@ ENV SECRET-KEY = "Placeholder"
 
 ENV REGION = "Placeholder"
 
+ENV LOG-STREAM = "Placeholder"
+
 CMD [ "Secrets-Creator" ]

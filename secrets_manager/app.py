@@ -5,6 +5,7 @@ import uvicorn
 import os
 
 from secrets_manager.lib.secrets_manager import SecretsManagerClient
+from secrets_manager.lib.logging import logger
 
 app = FastAPI()
 
@@ -24,6 +25,7 @@ def user_add(password_request: PasswordRequest):
     secret_name = password_request.secret_name
     username = password_request.username
     description = password_request.description
+    logger.info('Create secret requrest received, secret_name: %s, username: %s, description: %s', secret_name, username, description)
     new = sm_client.generate_and_store_secret(secret_name=secret_name, username=username, description=description)
     if new:
         message = secret_name + " created successfuly"

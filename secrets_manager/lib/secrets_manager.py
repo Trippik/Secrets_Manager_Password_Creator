@@ -3,6 +3,8 @@ import secrets
 import string
 import botocore.exceptions
 
+from secrets_manager.lib.logging import logger
+
 class SecretsManagerClient:
     def __init__(self, access_key:str, secret_key:str, region:str):
         session = boto3.session.Session(aws_access_key_id=access_key, aws_secret_access_key=secret_key, region_name=region)
@@ -27,6 +29,7 @@ class SecretsManagerClient:
         return(password)
     
     def generate_and_store_secret(self, secret_name:str, username:str, description=None):
+        logger.info('Recieved creation request for %s', secret_name)
         new = True
         password = self.generate_password()
         secret = {
@@ -38,4 +41,7 @@ class SecretsManagerClient:
             self.create_secret(name=secret_name, secret_string=secret, description=description)
         except self.client.exceptions.ResourceExistsException:
             new = False
+            logger.info("Secret already exists named %s", secret_name)
+        except Exception:
+            logger.exception("Error when trying to create %s", secret_name)
         return new
