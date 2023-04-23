@@ -20,3 +20,7 @@ REGION = AWS Region (e.g us-east-1) to create the secrets in
 ## Network Requirements
 
 A port will need to be forwarded to port 8000 of the container that will be used for HTTP access to the API.
+
+## Dockerhub
+
+https://hub.docker.com/repository/docker/trippik/secrets-manager-password-creator/general
