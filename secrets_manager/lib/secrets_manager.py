@@ -32,4 +32,4 @@ class SecretsManagerClient:
             'password': password,
         }
         secret = str(secret)
-        self.create_secret(secret_string=secret, description=description)
+        self.create_secret(name=secret_name, secret_string=secret, description=description)

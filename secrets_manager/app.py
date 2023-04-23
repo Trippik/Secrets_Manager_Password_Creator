@@ -25,13 +25,13 @@ def hello(name = None):
 
 @app.post('/create_secret')
 def user_add(password_request: PasswordRequest):
-    secret_name = password_request['secret_name']
-    username = password_request['username']
-    description = password_request['description']
+    secret_name = password_request.secret_name
+    username = password_request.username
+    description = password_request.description
     sm_client.generate_and_store_secret(secret_name=secret_name, username=username, description=description)
 
 def run():
-    uvicorn.run("app:app", port=5000, log_level="info")
+    uvicorn.run("app", port=5000, log_level="info")
 
 if __name__ == "__main__":
     run()
