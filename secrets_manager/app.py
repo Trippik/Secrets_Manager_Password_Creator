@@ -28,9 +28,9 @@ def user_add(password_request: PasswordRequest):
     logger.info('Create secret requrest received, secret_name: %s, username: %s, description: %s', secret_name, username, description)
     new = sm_client.generate_and_store_secret(secret_name=secret_name, username=username, description=description)
     if new:
-        message = secret_name + " created successfuly"
+        message = f"{secret_name} created successfuly"
     else:
-        message = "Secret named " + secret_name + " already exists"
+        message = f"Secret named {secret_name} already exists"
     return {message}
 
 def run():
